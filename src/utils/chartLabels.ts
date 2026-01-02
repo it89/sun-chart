@@ -1,6 +1,6 @@
 export function getYearMonthLabels(
     dates: Date[],
-    locale: string = 'en-US'
+    locale: string = navigator.language
 ): string[] {
     return dates.map((date: Date): string => {
             if (date.getDate() === 1) {
@@ -13,10 +13,10 @@ export function getYearMonthLabels(
 
 export function getMonthDaysLabels(
     dates: Date[],
-    locale: string = 'en-US'
+    locale: string = navigator.language
 ): string[] {
     return dates.map((date: Date): string => {
-            return date.getDate() + ' ' + date.toLocaleString(locale, {month: 'short'});
+            return date.getDate() + '.' + date.toLocaleString(locale, {month: 'short'});
         }
     )
 }

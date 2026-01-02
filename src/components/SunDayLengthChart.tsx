@@ -14,6 +14,7 @@ import {Line} from 'react-chartjs-2';
 import {getIndexForDate} from "../utils/yearDays";
 import {getDaysLengthInHours} from "../utils/sun";
 import {getMonthDaysLabels, getYearMonthLabels} from "../utils/chartLabels";
+import {type FC} from "react";
 
 ChartJS.register(
     CategoryScale,
@@ -33,12 +34,12 @@ interface SunDayLengthChartProps {
     longitude: number;
 }
 
-export function SunDayLengthChart({dates, latitude, longitude}: SunDayLengthChartProps) {
-    const currentDate = new Date();
-    const daysLength = getDaysLengthInHours(dates, latitude, longitude);
+export const SunDayLengthChart: FC<SunDayLengthChartProps> = ({dates, latitude, longitude}) => {
+    const currentDate: Date = new Date();
+    const daysLength: number[] = getDaysLengthInHours(dates, latitude, longitude);
     const tickLabels: string[] = getYearMonthLabels(dates);
     const labels: string[] = getMonthDaysLabels(dates);
-    const todayIndex = getIndexForDate(dates, currentDate);
+    const todayIndex: number = getIndexForDate(dates, currentDate);
 
     const options = {
         responsive: true,

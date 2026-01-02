@@ -1,18 +1,19 @@
 import {getDaysAround, getYearDays} from "../utils/yearDays";
 import {SunDayLengthChart} from "./SunDayLengthChart";
+import {type FC} from "react";
 
 interface ChartsPageProps {
     isCentralDate: boolean;
+    latitude: number;
+    longitude: number
 }
 
-export function ChartsPage({isCentralDate}: ChartsPageProps) {
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const days = isCentralDate ? getDaysAround(currentDate) : getYearDays(year);
+export const ChartsPage: FC<ChartsPageProps> = ({isCentralDate, latitude, longitude}) => {
+    const currentDate: Date = new Date();
+    const year: number = currentDate.getFullYear();
+    const days: Date[] = isCentralDate ? getDaysAround(currentDate) : getYearDays(year);
 
     return (
-        <>
-            <SunDayLengthChart dates={days} latitude={59.57} longitude={30.19}/>
-        </>
+        <SunDayLengthChart dates={days} latitude={latitude} longitude={longitude}/>
     )
 }
