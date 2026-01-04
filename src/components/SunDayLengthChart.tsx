@@ -72,7 +72,7 @@ export const SunDayLengthChart: FC<SunDayLengthChartProps> = ({dates, latitude, 
             x: {
                 ticks: {
                     maxRotation: 0,
-                    autoSkip: false,
+                    autoSkip: true,
                     callback: (_: any, index: number) => {
                         const label = tickLabels[index];
                         return label || undefined;

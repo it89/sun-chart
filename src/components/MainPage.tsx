@@ -1,29 +1,33 @@
-import {type FC, useEffect, useState} from "react";
+import {type FC, useState} from "react";
 import {Button, Layout, Space} from 'antd';
 import {AimOutlined, VerticalAlignMiddleOutlined} from "@ant-design/icons";
 import {Content, Header} from "antd/es/layout/layout";
 import {ChartsPage} from "./ChartsPage";
 import Title from "antd/es/typography/Title";
 import type {LocationInfo} from "../types/location.types";
-import {getLastLocationOrDefault, getLocationWithMemory} from "../utils/locationCache";
+import {getSelectedLocation, getUserLocation, saveSelectedLocation} from "../utils/location";
+import {searchLocations} from "../utils/locationSearch";
+import {LocationSearchButton} from "./LocationSearchButton";
 
 
 export const MainPage: FC = () => {
     const [isCentralDate, setIsCentralDate] = useState<boolean>(true);
-    const [location, setLocation] = useState<LocationInfo>(getLastLocationOrDefault());
-    const [loading, setLoading] = useState<boolean>(true);
+    const [location, setLocation] = useState<LocationInfo>(getSelectedLocation());
+    const [loading, setLoading] = useState<boolean>(false);
 
-    useEffect(() => {
-        getLocation(false);
-    }, []);
-
-    const getLocation = (refresh: boolean) => {
+    const updateLocation = (refresh: boolean) => {
         setLoading(true);
-        getLocationWithMemory(refresh).then((res) => {
+        getUserLocation(refresh).then((res) => {
             setLocation(res);
             setLoading(false);
+            saveSelectedLocation(res);
         });
     }
+
+    const handleLocationSelect = (location: LocationInfo) => {
+        setLocation(location);
+        saveSelectedLocation(location);
+    };
 
     return (
         <Layout style={{
@@ -35,7 +39,6 @@ export const MainPage: FC = () => {
                 height: '46px',
                 lineHeight: '46px',
                 padding: '0 16px',
-                borderBottom: '1px solid #f0f0f0',
                 margin: 0
             }}>
                 <Space>
@@ -47,7 +50,11 @@ export const MainPage: FC = () => {
                     <Button icon={<AimOutlined/>}
                             size="large"
                             loading={loading}
-                            onClick={() => getLocation(true)}
+                            onClick={() => updateLocation(true)}
+                    />
+                    <LocationSearchButton
+                        onLocationSelect={handleLocationSelect}
+                        searchLocations={searchLocations}
                     />
                     <Title level={3}
                            style={{
@@ -58,8 +65,6 @@ export const MainPage: FC = () => {
                 </Space>
             </Header>
             <Content style={{
-                margin: 10,
-                padding: 10,
                 background: '#ffffff',
                 display: 'flex',
                 flexDirection: 'column'
