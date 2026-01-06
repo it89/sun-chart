@@ -43,6 +43,8 @@ export const SunDayLengthChart: FC<SunDayLengthChartProps> = ({dates, latitude, 
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
+        devicePixelRatio: 2,
         plugins: {
             legend: {
                 position: 'top' as const,

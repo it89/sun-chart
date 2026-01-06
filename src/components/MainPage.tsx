@@ -36,10 +36,14 @@ export const MainPage: FC = () => {
         }}>
             <Header style={{
                 background: '#ffffff',
-                height: '46px',
-                lineHeight: '46px',
+                height: 'auto',
+                minHeight: '46px',
                 padding: '0 16px',
-                margin: 0
+                margin: 0,
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '8px'
             }}>
                 <Space>
                     <Button icon={<VerticalAlignMiddleOutlined style={{transform: 'rotate(90deg)'}}/>}
@@ -56,18 +60,20 @@ export const MainPage: FC = () => {
                         onLocationSelect={handleLocationSelect}
                         searchLocations={searchLocations}
                     />
-                    <Title level={3}
-                           style={{
-                               margin: 0
-                           }}>
-                        {location.name}
-                    </Title>
                 </Space>
+                <Title level={3}
+                       style={{
+                           margin: 0
+                       }}>
+                    {location.name}
+                </Title>
+
             </Header>
             <Content style={{
                 background: '#ffffff',
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'column',
+                maxHeight: 'calc(100vw * 0.8)'
             }}>
                 <ChartsPage isCentralDate={isCentralDate}
                             latitude={location.latitude}
