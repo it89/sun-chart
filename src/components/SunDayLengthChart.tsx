@@ -15,8 +15,8 @@ import {getIndexForDate} from "../utils/yearDays";
 import {getDaysLengthInHours} from "../utils/sun";
 import {getMonthDaysLabels, getYearMonthLabels} from "../utils/chartLabels";
 import {type FC} from "react";
-import starsUrl from "../images/stars.png";
-import sunUrl from "../images/sun.png";
+import starsUrl from "../images/starsBackground.svg";
+import sunUrl from "../images/sunBackground.svg";
 
 const starsImage = new Image();
 starsImage.src = starsUrl;
@@ -27,7 +27,7 @@ sunImage.src = sunUrl;
 const backgroundImagesPlugin = {
     id: 'backgroundImages',
     beforeDraw: (chart: ChartJS) => {
-        const {ctx, chartArea, scales, data, options} = chart;
+        const {ctx, chartArea, scales, options} = chart;
 
         const pluginsOptions = options.plugins as Record<string, unknown> | undefined;
         const backgroundImagesOptions = pluginsOptions?.backgroundImages as {enabled?: boolean} | undefined;
