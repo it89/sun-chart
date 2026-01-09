@@ -15,6 +15,81 @@ import {getIndexForDate} from "../utils/yearDays";
 import {getDaysLengthInHours} from "../utils/sun";
 import {getMonthDaysLabels, getYearMonthLabels} from "../utils/chartLabels";
 import {type FC} from "react";
+import starsUrl from "../images/stars.png";
+import sunUrl from "../images/sun.png";
+
+const starsImage = new Image();
+starsImage.src = starsUrl;
+
+const sunImage = new Image();
+sunImage.src = sunUrl;
+
+const backgroundImagesPlugin = {
+    id: 'backgroundImages',
+    beforeDraw: (chart: ChartJS) => {
+        const {ctx, chartArea, scales, data, options} = chart;
+
+        const pluginsOptions = options.plugins as Record<string, unknown> | undefined;
+        const backgroundImagesOptions = pluginsOptions?.backgroundImages as {enabled?: boolean} | undefined;
+        if (!backgroundImagesOptions?.enabled) {
+            return;
+        }
+        if (!chartArea) {
+            return;
+        }
+
+        const xScale = scales.x;
+        const yScale = scales.y;
+        if (!xScale || !yScale) {
+            return;
+        }
+
+        const {left, right, top, bottom} = chartArea;
+        const width = right - left;
+        const height = bottom - top;
+
+        const drawOrQueueImage = (img: HTMLImageElement) => {
+            if (img.complete) {
+                ctx.drawImage(img, left, top, width, height);
+            } else {
+                img.onload = () => {
+                    chart.draw();
+                };
+            }
+        };
+
+        ctx.save();
+        drawOrQueueImage(starsImage);
+        ctx.restore();
+
+        const dataset = data.datasets[0];
+        const values = dataset?.data as number[] | undefined;
+        if (!values || values.length === 0) {
+            return;
+        }
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(left, bottom);
+
+        for (let i = 0; i < values.length; i++) {
+            const x = xScale.getPixelForValue(i);
+            const y = yScale.getPixelForValue(values[i]);
+            if (i === 0) {
+                ctx.lineTo(x, bottom);
+            }
+            ctx.lineTo(x, y);
+        }
+
+        const lastX = xScale.getPixelForValue(values.length - 1);
+        ctx.lineTo(lastX, bottom);
+        ctx.closePath();
+        ctx.clip();
+
+        drawOrQueueImage(sunImage);
+        ctx.restore();
+    },
+};
 
 ChartJS.register(
     CategoryScale,
@@ -26,15 +101,17 @@ ChartJS.register(
     Filler,
     Legend,
     annotationPlugin,
+    backgroundImagesPlugin,
 );
 
 interface SunDayLengthChartProps {
     dates: Date[];
     latitude: number;
     longitude: number;
+    isDarkMode: boolean;
 }
 
-export const SunDayLengthChart: FC<SunDayLengthChartProps> = ({dates, latitude, longitude}) => {
+export const SunDayLengthChart: FC<SunDayLengthChartProps> = ({dates, latitude, longitude, isDarkMode}) => {
     const currentDate: Date = new Date();
     const daysLength: number[] = getDaysLengthInHours(dates, latitude, longitude);
     const tickLabels: string[] = getYearMonthLabels(dates);
@@ -69,13 +146,16 @@ export const SunDayLengthChart: FC<SunDayLengthChartProps> = ({dates, latitude, 
                     }
                 }
             },
+            backgroundImages: {
+                enabled: isDarkMode,
+            },
         },
         scales: {
             x: {
                 ticks: {
                     maxRotation: 0,
                     autoSkip: true,
-                    callback: (_: any, index: number) => {
+                    callback: (_value: string | number, index: number) => {
                         const label = tickLabels[index];
                         return label || undefined;
                     }
@@ -99,12 +179,12 @@ export const SunDayLengthChart: FC<SunDayLengthChartProps> = ({dates, latitude, 
         labels: labels,
         datasets: [
             {
-                fill: true,
+                fill: !isDarkMode,
                 label: 'Day Length',
                 data: daysLength,
                 borderColor: 'rgb(255, 153, 51)',
-                backgroundColor: 'rgba(255, 153, 51, 0.5)',
-                pointRadius: 1
+                backgroundColor: isDarkMode ? 'rgba(255, 153, 51, 0.0)' : 'rgba(255, 153, 51, 0.5)',
+                pointRadius: 1,
             },
         ],
     };

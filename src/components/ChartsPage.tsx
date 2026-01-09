@@ -5,15 +5,22 @@ import {type FC} from "react";
 interface ChartsPageProps {
     isCentralDate: boolean;
     latitude: number;
-    longitude: number
+    longitude: number;
+    isDarkMode: boolean;
 }
 
-export const ChartsPage: FC<ChartsPageProps> = ({isCentralDate, latitude, longitude}) => {
+export const ChartsPage: FC<ChartsPageProps> = ({isCentralDate, latitude, longitude, isDarkMode}) => {
     const currentDate: Date = new Date();
     const year: number = currentDate.getFullYear();
     const days: Date[] = isCentralDate ? getDaysAround(currentDate) : getYearDays(year);
 
     return (
-        <SunDayLengthChart dates={days} latitude={latitude} longitude={longitude}/>
+        <SunDayLengthChart
+            dates={days}
+            latitude={latitude}
+            longitude={longitude}
+            isDarkMode={isDarkMode}
+        />
     )
 }
+
