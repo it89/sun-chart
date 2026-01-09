@@ -34,7 +34,9 @@ export const MainPage: FC = () => {
             const next = !prev;
             try {
                 localStorage.setItem(THEME_STORAGE_KEY, next ? 'dark' : 'light');
-            } catch { }
+            } catch {
+                // ignore
+            }
             return next;
         });
     };
