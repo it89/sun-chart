@@ -1,6 +1,6 @@
 import {type FC, useState} from "react";
 import {Button, Layout, Space} from 'antd';
-import {AimOutlined, VerticalAlignMiddleOutlined} from "@ant-design/icons";
+import {AimOutlined, BulbOutlined, VerticalAlignMiddleOutlined} from "@ant-design/icons";
 import {Content, Header} from "antd/es/layout/layout";
 import {ChartsPage} from "./ChartsPage";
 import Title from "antd/es/typography/Title";
@@ -14,6 +14,7 @@ export const MainPage: FC = () => {
     const [isCentralDate, setIsCentralDate] = useState<boolean>(true);
     const [location, setLocation] = useState<LocationInfo>(getSelectedLocation());
     const [loading, setLoading] = useState<boolean>(false);
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
 
     const updateLocation = (refresh: boolean) => {
         setLoading(true);
@@ -51,6 +52,11 @@ export const MainPage: FC = () => {
                             type={isCentralDate ? "primary" : "default"}
                             size="large"
                     />
+                    <Button icon={<BulbOutlined/>}
+                            onClick={() => setIsDarkMode(!isDarkMode)}
+                            type={isDarkMode ? "primary" : "default"}
+                            size="large"
+                    />
                     <Button icon={<AimOutlined/>}
                             size="large"
                             loading={loading}
@@ -77,7 +83,9 @@ export const MainPage: FC = () => {
             }}>
                 <ChartsPage isCentralDate={isCentralDate}
                             latitude={location.latitude}
-                            longitude={location.longitude}/>
+                            longitude={location.longitude}
+                            isDarkMode={isDarkMode}
+                />
             </Content>
         </Layout>
     )
