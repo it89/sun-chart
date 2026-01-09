@@ -9,12 +9,37 @@ import {getSelectedLocation, getUserLocation, saveSelectedLocation} from "../uti
 import {searchLocations} from "../utils/locationSearch";
 import {LocationSearchButton} from "./LocationSearchButton";
 
+const THEME_STORAGE_KEY = 'sun_chart_theme';
+
+const getInitialTheme = (): boolean => {
+    try {
+        const stored = localStorage.getItem(THEME_STORAGE_KEY);
+        if (!stored) {
+            return true;
+        }
+        return stored === 'dark';
+    } catch {
+        return true;
+    }
+};
 
 export const MainPage: FC = () => {
     const [isCentralDate, setIsCentralDate] = useState<boolean>(true);
     const [location, setLocation] = useState<LocationInfo>(getSelectedLocation());
     const [loading, setLoading] = useState<boolean>(false);
-    const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(getInitialTheme);
+
+    const toggleDarkMode = () => {
+        setIsDarkMode(prev => {
+            const next = !prev;
+            try {
+                localStorage.setItem(THEME_STORAGE_KEY, next ? 'dark' : 'light');
+            } catch {
+                // ignore
+            }
+            return next;
+        });
+    };
 
     const updateLocation = (refresh: boolean) => {
         setLoading(true);
@@ -53,7 +78,7 @@ export const MainPage: FC = () => {
                             size="large"
                     />
                     <Button icon={<BulbOutlined/>}
-                            onClick={() => setIsDarkMode(!isDarkMode)}
+                            onClick={toggleDarkMode}
                             type={isDarkMode ? "primary" : "default"}
                             size="large"
                     />
