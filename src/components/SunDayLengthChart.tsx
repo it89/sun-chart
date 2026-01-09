@@ -62,9 +62,9 @@ const backgroundImagesPlugin = {
         drawOrQueueImage(starsImage);
         ctx.restore();
 
-        const dataset = data.datasets[0];
-        const values = dataset?.data as number[] | undefined;
-        if (!values || values.length === 0) {
+        const meta = chart.getDatasetMeta(0);
+        const points = meta.data as {x: number; y: number; skip?: boolean}[];
+        if (!points || points.length === 0) {
             return;
         }
 
@@ -72,17 +72,25 @@ const backgroundImagesPlugin = {
         ctx.beginPath();
         ctx.moveTo(left, bottom);
 
-        for (let i = 0; i < values.length; i++) {
-            const x = xScale.getPixelForValue(i);
-            const y = yScale.getPixelForValue(values[i]);
-            if (i === 0) {
+        let firstPointDrawn = false;
+        for (let i = 0; i < points.length; i++) {
+            const point = points[i];
+            if (!point || point.skip) {
+                continue;
+            }
+            const x = point.x;
+            const y = point.y;
+            if (!firstPointDrawn) {
                 ctx.lineTo(x, bottom);
+                firstPointDrawn = true;
             }
             ctx.lineTo(x, y);
         }
 
-        const lastX = xScale.getPixelForValue(values.length - 1);
-        ctx.lineTo(lastX, bottom);
+        const lastVisible = [...points].reverse().find(p => p && !p.skip);
+        if (lastVisible) {
+            ctx.lineTo(lastVisible.x, bottom);
+        }
         ctx.closePath();
         ctx.clip();
 
