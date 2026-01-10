@@ -6,10 +6,9 @@ interface ChartsPageProps {
     isCentralDate: boolean;
     latitude: number;
     longitude: number;
-    isDarkMode: boolean;
 }
 
-export const ChartsPage: FC<ChartsPageProps> = ({isCentralDate, latitude, longitude, isDarkMode}) => {
+export const ChartsPage: FC<ChartsPageProps> = ({isCentralDate, latitude, longitude}) => {
     const currentDate: Date = new Date();
     const year: number = currentDate.getFullYear();
     const days: Date[] = isCentralDate ? getDaysAround(currentDate) : getYearDays(year);
@@ -19,7 +18,6 @@ export const ChartsPage: FC<ChartsPageProps> = ({isCentralDate, latitude, longit
             dates={days}
             latitude={latitude}
             longitude={longitude}
-            isDarkMode={isDarkMode}
         />
     )
 }
