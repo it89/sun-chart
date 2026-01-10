@@ -15,6 +15,7 @@ import {getIndexForDate} from "../utils/yearDays";
 import {getDaysLengthInHours} from "../utils/sun";
 import {getMonthDaysLabels, getYearMonthLabels} from "../utils/chartLabels";
 import {type FC} from "react";
+import {useTheme} from "../context/ThemeContext";
 import starsUrl from "../images/starsBackground.svg";
 import sunUrl from "../images/sunBackground.svg";
 
@@ -116,10 +117,10 @@ interface SunDayLengthChartProps {
     dates: Date[];
     latitude: number;
     longitude: number;
-    isDarkMode: boolean;
 }
 
-export const SunDayLengthChart: FC<SunDayLengthChartProps> = ({dates, latitude, longitude, isDarkMode}) => {
+export const SunDayLengthChart: FC<SunDayLengthChartProps> = ({dates, latitude, longitude}) => {
+    const {isDarkMode} = useTheme();
     const currentDate: Date = new Date();
     const daysLength: number[] = getDaysLengthInHours(dates, latitude, longitude);
     const tickLabels: string[] = getYearMonthLabels(dates);

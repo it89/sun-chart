@@ -1,10 +1,13 @@
 import './App.css'
 import {MainPage} from "./components/MainPage";
+import {ThemeProvider} from "./context/ThemeContext";
 
 function App() {
 
     return (
-        <MainPage/>
+        <ThemeProvider>
+            <MainPage/>
+        </ThemeProvider>
     )
 }
 
