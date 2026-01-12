@@ -1,4 +1,5 @@
 import {createContext, type FC, type PropsWithChildren, useContext, useState} from "react";
+import {ConfigProvider, theme} from "antd";
 
 interface ThemeContextValue {
     isDarkMode: boolean;
@@ -21,7 +22,8 @@ const getInitialTheme = (): boolean => {
 
 const defaultTheme: ThemeContextValue = {
     isDarkMode: true,
-    toggleDarkMode: () => {},
+    toggleDarkMode: () => {
+    },
 }
 
 const ThemeContext = createContext<ThemeContextValue>(defaultTheme);
@@ -43,7 +45,13 @@ export const ThemeProvider: FC<PropsWithChildren> = ({children}) => {
 
     return (
         <ThemeContext.Provider value={{isDarkMode, toggleDarkMode}}>
-            {children}
+            <ConfigProvider
+                theme={{
+                    algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
+                }}
+            >
+                {children}
+            </ConfigProvider>
         </ThemeContext.Provider>
     );
 };
