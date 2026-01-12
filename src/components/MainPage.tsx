@@ -1,7 +1,7 @@
 import {type FC, useState} from "react";
-import {Button, Layout, Space} from 'antd';
+import {Button, Layout, Row, Space} from 'antd';
 import {AimOutlined, BulbOutlined, VerticalAlignMiddleOutlined} from "@ant-design/icons";
-import {Content, Header} from "antd/es/layout/layout";
+import {Content} from "antd/es/layout/layout";
 import {ChartsPage} from "./ChartsPage";
 import Title from "antd/es/typography/Title";
 import type {LocationInfo} from "../types/location.types";
@@ -32,11 +32,9 @@ export const MainPage: FC = () => {
 
     return (
         <Layout style={{
-            height: 'calc(100vh - 46px)',
-            background: '#ffffff',
+            height: '100vh'
         }}>
-            <Header style={{
-                background: '#ffffff',
+            <Row style={{
                 height: 'auto',
                 minHeight: '46px',
                 padding: '0 16px',
@@ -74,9 +72,8 @@ export const MainPage: FC = () => {
                     {location.name}
                 </Title>
 
-            </Header>
+            </Row>
             <Content style={{
-                background: '#ffffff',
                 display: 'flex',
                 flexDirection: 'column',
                 maxHeight: 'calc(100vw * 0.8)'

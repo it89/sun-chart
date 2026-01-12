@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {Button, Modal, Input, List, Alert, Col} from 'antd';
+import {Button, Modal, Input, List, Alert, Col, theme} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import type {LocationInfo, LocationSearchInfo} from "../types/location.types";
 
@@ -61,6 +61,9 @@ export const LocationSearchButton: React.FC<LocationSearchModalProps> = ({
         }
     }, [searchQuery]);
 
+    const { useToken } = theme;
+    const { token } = useToken();
+
     const renderSearchResults = () => {
         if (error) {
             return (
@@ -90,12 +93,12 @@ export const LocationSearchButton: React.FC<LocationSearchModalProps> = ({
                                 transition: 'all 0.2s',
                             }}
                             onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = '#f5f5f5';
-                                e.currentTarget.style.borderColor = '#1890ff';
+                                e.currentTarget.style.backgroundColor = token.colorFillSecondary;
+                                e.currentTarget.style.borderColor = token.colorPrimary;
                             }}
                             onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = 'white';
-                                e.currentTarget.style.borderColor = '#f0f0f0';
+                                e.currentTarget.style.backgroundColor = token.colorBgContainer;
+                                e.currentTarget.style.borderColor = token.colorBorderSecondary;
                             }}
                         >
                             <List.Item.Meta
