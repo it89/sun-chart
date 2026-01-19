@@ -32,7 +32,7 @@ export const MainPage: FC = () => {
 
     return (
         <Layout style={{
-            height: '100vh'
+            height: '100dvh'
         }}>
             <Row style={{
                 height: 'auto',
