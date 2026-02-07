@@ -32,12 +32,13 @@ export const MainPage: FC = () => {
 
     return (
         <Layout style={{
-            height: '100vh'
+            height: '100dvh'
         }}>
             <Row style={{
                 height: 'auto',
                 minHeight: '46px',
                 padding: '0 16px',
+                paddingTop: '8px',
                 margin: 0,
                 display: 'flex',
                 alignItems: 'center',
