@@ -38,6 +38,7 @@ export const MainPage: FC = () => {
                 height: 'auto',
                 minHeight: '46px',
                 padding: '0 16px',
+                paddingTop: '8px',
                 margin: 0,
                 display: 'flex',
                 alignItems: 'center',
